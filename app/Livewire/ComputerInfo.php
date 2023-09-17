@@ -4,6 +4,8 @@ namespace App\Livewire;
 
 use Illuminate\Contracts\View\View;
 use Livewire\Component;
+use Matriphe\Larinfo\Larinfo;
+use Linfo\Linfo;
 
 class ComputerInfo extends Component
 {
@@ -15,22 +17,20 @@ class ComputerInfo extends Component
     }
 
     private function getTotalMemory(): void {
-        // Get the output of the command as a string
-        $totalMemory = shell_exec("grep MemTotal /proc/meminfo");
+        // Create a new instance of the Larinfo class
+        $linfo = new Linfo();
 
-        // Extract the number of kB using a regular expression
-        preg_match('/\d+/', $totalMemory, $matches);
-        $memoryInKB = $matches[0];
+        // Get the total memory in bytes
+        $totalMemory = $linfo->getRam()['total'];
 
         // Convert the memory to GB and cast it to an integer
-        $this->memoryInGB = intval($memoryInKB / 1024 / 1024);
-        $this->totalMemory = $memoryInKB;
+        $this->memoryInGB = intval($totalMemory / 1024 / 1024 / 1024);
+        $this->totalMemory = $totalMemory;
     }
 
     public function render(): View
     {
         return view('livewire.computer-info', [
-            'totalMemory' => $this->totalMemory,
             'memoryInGB' => $this->memoryInGB,
         ]);
     }
