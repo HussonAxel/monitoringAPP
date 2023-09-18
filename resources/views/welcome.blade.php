@@ -12,6 +12,7 @@
 <body>
 <div class="container mt-5">
     <livewire:ComputerInfo/></div>
+    
 
 @livewireScripts
 </body>

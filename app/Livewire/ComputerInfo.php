@@ -4,34 +4,62 @@ namespace App\Livewire;
 
 use Illuminate\Contracts\View\View;
 use Livewire\Component;
-use Matriphe\Larinfo\Larinfo;
 use Linfo\Linfo;
 
 class ComputerInfo extends Component
 {
-    public int $totalMemory = 0;
-    public int $memoryInGB = 0;
+    public string $TotalAwaken;
+    public string $os;
+    public string $osName;
+    public string $osVersion;
+    public string $kernel;
+    public string $CPUArchitecture;
+    public $CPU;
 
-    public function mount(): void {
-        $this->getTotalMemory();
+    public function mount(): void
+    {
+        $this->getPcComponents();
+        $this->getPcStatus();
+        $this->getPcInformations();
     }
 
-    private function getTotalMemory(): void {
-        // Create a new instance of the Larinfo class
+    private function getPcComponents(): void
+    {
         $linfo = new Linfo();
 
-        // Get the total memory in bytes
-        $totalMemory = $linfo->getRam()['total'];
+        $this->CPUArchitecture = $linfo->getCPUArchitecture();
+        $this->CPU = $linfo->getCPU()[0]['Model'];
+    }
 
-        // Convert the memory to GB and cast it to an integer
-        $this->memoryInGB = intval($totalMemory / 1024 / 1024 / 1024);
-        $this->totalMemory = $totalMemory;
+    private function getPcStatus(): void
+    {
+        $linfo = new Linfo();
+
+        $uptime = $linfo->getUptime();
+        $this->TotalAwaken = $uptime['text'];
+    }
+
+    private function getPcInformations(): void
+    {
+        $linfo = new Linfo();
+
+        $this->kernel = $linfo->getKernel();
+        $distro = $linfo->getDistro();
+        $this->osName = $distro['name'];
+        $this->osVersion = $distro['version'];
+        $this->os = $linfo->getOS();
     }
 
     public function render(): View
     {
         return view('livewire.computer-info', [
-            'memoryInGB' => $this->memoryInGB,
+            'TotalAwaken' => $this->TotalAwaken,
+            'os' => $this->os,
+            'osName' => $this->osName,
+            'osVersion' => $this->osVersion,
+            'kernel' => $this->kernel,
+            'CPUArchitecture' => $this->CPUArchitecture,
+            'CPU' => $this->CPU,
         ]);
     }
 }
