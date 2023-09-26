@@ -5,6 +5,7 @@
             <div class="card-body">
                 <h5 class="card-title font-weight-bold text-black">OS Installed : </h5>
                 <p class="card-text text-secondary">{{$os}} - {{$osName}} ({{$osVersion}}) </p>
+
             </div>
         </div>
     </div>
@@ -82,6 +83,15 @@
             <div class="card-body">
                 <h5 class="card-title font-weight-bold text-black"> RAM Available : </h5>
                 <p class="card-text text-secondary">Texte du bloc 2</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6 mb-4">
+        <div class="card border">
+            <div class="card-body">
+                <h5 class="card-title font-weight-bold text-black"> RAM Used : </h5>
+                <p class="card-text text-secondary">{{ $freeRam}} </p>
             </div>
         </div>
     </div>

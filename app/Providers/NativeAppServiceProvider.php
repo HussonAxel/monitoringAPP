@@ -4,6 +4,9 @@ namespace App\Providers;
 
 use Native\Laravel\Facades\Window;
 use Native\Laravel\Contracts\ProvidesPhpIni;
+use Native\Laravel\Facades\MenuBar;
+use Native\Laravel\Menu\Menu;
+
 
 class NativeAppServiceProvider implements ProvidesPhpIni
 {
@@ -13,7 +16,35 @@ class NativeAppServiceProvider implements ProvidesPhpIni
      */
     public function boot(): void
     {
-        Window::open();
+        Window::open()
+            ->rememberState()
+            ->backgroundColor('#00000050') // Semi-transparent black
+            ->title('PC Performances')
+            ->width(1200)
+            ->height(800);
+
+        MenuBar::create()
+            ->width(800)
+            ->height(600)
+
+            ->onlyShowContextMenu()
+            ->withContextMenu(
+                Menu::new()
+                    ->label('PC Performances')
+                    ->label('PC Components')
+                    ->label('PC Settings')
+                    ->separator()
+                    ->label('Issues')
+                    ->label('Documentation')
+                    ->label('Quit')
+                    ->quit()
+            )
+            ->showDockIcon()
+            ->label('Status: Online');
+        // ->url('https://google.com');
+
+
+
     }
 
     /**
@@ -21,7 +52,6 @@ class NativeAppServiceProvider implements ProvidesPhpIni
      */
     public function phpIni(): array
     {
-        return [
-        ];
+        return [];
     }
 }

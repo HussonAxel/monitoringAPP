@@ -15,6 +15,7 @@ class ComputerInfo extends Component
     public string $kernel;
     public string $CPUArchitecture;
     public $CPU;
+    public string $freeRam;
 
     public function mount(): void
     {
@@ -48,6 +49,7 @@ class ComputerInfo extends Component
         $this->osName = $distro['name'];
         $this->osVersion = $distro['version'];
         $this->os = $linfo->getOS();
+        $this->freeRam = shell_exec('free -m | awk \'NR==2{printf "%.2f%%", $3*100/$2 }\'');
     }
 
     public function render(): View
@@ -60,6 +62,7 @@ class ComputerInfo extends Component
             'kernel' => $this->kernel,
             'CPUArchitecture' => $this->CPUArchitecture,
             'CPU' => $this->CPU,
+            'freeRam' => $this->freeRam,
         ]);
     }
 }
